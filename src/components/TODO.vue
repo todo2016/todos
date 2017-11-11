@@ -2,7 +2,7 @@
   <div>
     <h1>
       {{subject.Title}}
-      <span @click="myAlert('add')">+</span>
+      <span @click="addTODO('add')">+</span>
     </h1>
     <ul>
       <li v-for="item in todos">
@@ -12,6 +12,7 @@
         </label>
       </li>
     </ul>
+
   </div>
 </template>
 
@@ -23,14 +24,15 @@
     data() {
       return {
         subject: {},
-        todos: {}
+        todos: [],
+        i: 0
       };
     },
     created() {
       this.$http.get('/api/todos').then((response) => {
         response = response.body;
         if (response.errno === ERR_OK) {
-          this.todos = Object.assign({}, this.todos, response.data);
+          this.todos = Object.assign([], this.todos, response.data);
         }
       });
       this.$http.get('/api/subject').then((response) => {
@@ -41,8 +43,15 @@
       });
     },
     methods: {
-      myAlert(msg) {
-        alert(msg);
+      addTODO(msg) {
+        var todo = {
+          content: msg + '自己加的' + this.i++,
+          checked: false
+        };
+
+        this.todos.push(todo);
+
+        // alert(msg);
       }
     }
 
