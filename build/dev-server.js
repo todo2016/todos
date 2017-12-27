@@ -26,7 +26,7 @@ const app = express()
 // wangwei add
 var appData = require('../data.json')
 var subject = appData.Subject
-var todos =appData.TODO
+var todos = appData.TODO
 
 var apiRoutes = express.Router()
 
@@ -34,14 +34,36 @@ apiRoutes.get('/subject', function (req, res) {
   res.json({
     errno: 0,
     data: subject
-  });
+  })
 })
 
 apiRoutes.get('/todos', function (req, res) {
   res.json({
     errno: 0,
     data: todos
-  });
+  })
+})
+
+//end
+
+// songym add
+var appTodos = require('../static/todos.json')
+
+var todolist = appTodos.todolist
+var _todos = appTodos.todos
+
+apiRoutes.get('/todolist', function (req, res) {
+  res.json({
+    errno: 0,
+    data: todolist
+  })
+})
+
+apiRoutes.get('/mytodos', function (req, res) {
+  res.json({
+    errno: 0,
+    data: _todos
+  })
 })
 
 app.use('/api', apiRoutes)
@@ -77,7 +99,7 @@ app.use(hotMiddleware)
 Object.keys(proxyTable).forEach(function (context) {
   let options = proxyTable[context]
   if (typeof options === 'string') {
-    options = { target: options }
+    options = {target: options}
   }
   app.use(proxyMiddleware(options.filter || context, options))
 })
